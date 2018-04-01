@@ -4,8 +4,7 @@
 This python script is used to generate stub files for an Open Source SDK!
 The tool is in very early development and may be unusable and is not intended for end users at the moment!
 
-This tool was written by **CrazyVoid** 
- and ASM by **Frangarcj**
+This tool was written by **CrazyVoid** and ASM by **Frangarcj**
 
 If you wish to contribute to this tool, please verify or attempt to verify it works on all platforms before pushing changes
 Windows, Linux, Mac
