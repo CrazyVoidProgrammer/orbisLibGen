@@ -1,0 +1,13 @@
+.section .orbislink.fstubs.$MODULE_NAME$.$LIBRARY_NAME$,"ax",%progbits
+
+    .align 4
+    .global $ASM_FNAME$
+    .type $ASM_FNAME$, %function
+$ASM_FNAME$:
+.if GEN_WEAK_EXPORTS
+    .word 0x00000008
+.else
+    .word 0x00000000
+.endif //GEN_WEAK_EXPORTS
+    .octal 0x$FUNCTION_NID$
+    .align 4
