@@ -44,7 +44,7 @@ $(TARGETS) $(TARGETS_WEAK):
 	$(RANLIB) $@
 
 %.o: %.S
-	$(COMPILER) $(ASFLAGS) -DGEN_WEAK_EXPORTS=0 $< -o $@
+	$(COMPILER) $(ASFLAGS) -DGEN_WEAK_EXPORTS=0 $< -o $@ -c
 
 %.wo: %.S
-	$(COMPILER) $(ASFLAGS) -DGEN_WEAK_EXPORTS=1 $< -o $@
+	$(COMPILER) $(ASFLAGS) -DGEN_WEAK_EXPORTS=1 $< -o $@ -c
