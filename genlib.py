@@ -91,8 +91,11 @@ for jsonFiles in os.listdir(input_idc_file_loc):
 
 			# Need to do this manually to make makefile
 			print('[+] Generating Makefile Files')
-			target_loop.append(" " + lib_name + ".a")
+			target_loop.append(" " + lib_name + "_stub.a")
 			target_weak_loop.append(" " + lib_name + "_stub_weak.a")
+			
+			module_obj_loop.append(lib_name + "_OBJS=")
+			module_weak_obj_loop.append(lib_name + "_weak_OBJS=")
 			
 			for prxSyms in module_symbols:
 				if prxSyms["name"] and prxSyms["hex_id"]:
@@ -100,6 +103,8 @@ for jsonFiles in os.listdir(input_idc_file_loc):
 					module_weak_obj_loop.append(" " + module_name + "_" + lib_name + "_" + prxSyms["name"] + ".wo")
 				else:
 					print('[MGEN] Skipping Function')
+			module_obj_loop.append("\n")
+			module_weak_obj_loop.append("\n")
 
 # Join our list to generate needed files
 target_loop_joined = ' '.join(target_loop)
