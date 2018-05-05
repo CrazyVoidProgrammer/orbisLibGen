@@ -10,14 +10,18 @@ print('\n[+] Loading Template Files\n[LOAD] template/stub.template\n[LOAD] cmake
 stub_template_fh = open("template/stub.template", "rb")
 #cmake_template_fh = open("template/cmake.template", "rb")
 makefile_template_fh = open("template/makefile.template", "rb")
+core_stub_template_fh = open("template/core_stub.template", "rb")
 
 stub_template_content = stub_template_fh.read()
 #cmake_template_content = cmake_template_fh.read()
 makefile_template_content = makefile_template_fh.read()
+core_stub_template_content = core_stub_template_fh.read()
+
 
 stub_template_fh.close()
 #cmake_template_fh.close()
 makefile_template_fh.close()
+core_stub_template_fh.close()
 
 def printHelp():
 	print('Usage : genlib.py idc_lib_folder')
@@ -25,22 +29,30 @@ def printHelp():
 	
 def genAssembly(inSymbols, xmodule_name, xlib_name):
 	print('[+] Generating Assembly Files ')
+	xstub_filename = (lib_name + ".S")
+	xstub_content_temp = []
+	xstub_replace_temp = core_stub_template_content
+	cxstub = ""
+
+	
 	for prxSyms in inSymbols:
 		if prxSyms["name"] and prxSyms["hex_id"]:
-			tempASMContent = stub_template_content
-			tempASMContent = tempASMContent.replace("$MODULE_NAME$", xmodule_name)
-			tempASMContent = tempASMContent.replace("$LIBRARY_NAME$", xlib_name)
-			tempASMContent = tempASMContent.replace("$ASM_FNAME$", prxSyms["name"])
-			tempASMContent = tempASMContent.replace("$FUNCTION_NID$", prxSyms["hex_id"])
-			stub_output_name = xmodule_name + "_" + xlib_name + "_" +  prxSyms["name"] + ".S"
-			#stub_output_name = xlib_name + "_" + xmodule_name + "_" +  prxSyms["name"] + ".S"
-			#stub_output_name = xmodule_name + "_" +  prxSyms["name"] + ".S"
-			print("[STUB] Generating : " + stub_output_name)
-			output_stub_handle = open("build/" + stub_output_name, "wb")
-			output_stub_handle.write(tempASMContent)
-			output_stub_handle.close()
+
+			cxstub = cxstub.replace("$$LIB_NAME$$", lib_name)
+			cxstub = cxstub.replace("$$FUNCTION_NAME$$", prxSyms["name"])
+			cxstub = cxstub.replace("$$NID$$", prxSyms["hex_id"])
+			
+			xstub_content_temp.append("\n" + cxstub)
+
+			# Resets template var with template data
+			cxstub = core_stub_template_content 
 		else:
-			print('')
+			print('[ERROR] Invalid Function \n')
+			
+	print("[STUB] Generating : " + xstub_filename)
+	output_stubx_handle = open("build/" + xstub_filename, "wb")
+	output_stubx_handle.write("".join(xstub_content_temp))
+	output_stubx_handle.close()
 	
 	
 def genMakefile(inSymbols, xmodule_name, xlib_name):
@@ -94,13 +106,30 @@ for jsonFiles in os.listdir(input_idc_file_loc):
 			target_loop.append(" " + lib_name + ".a")
 			target_weak_loop.append(" " + lib_name + "_stub_weak.a")
 			
+			# Open Stub Filename
+			#stub_filename = lib_name + ".S"
+			#stub_content_temp = []
+			#stub_replace_temp = core_stub_template_content
+			
 			for prxSyms in module_symbols:
 				if prxSyms["name"] and prxSyms["hex_id"]:
 					module_obj_loop.append(" " + module_name + "_" + lib_name + "_" + prxSyms["name"] + ".o")
 					module_weak_obj_loop.append(" " + module_name + "_" + lib_name + "_" + prxSyms["name"] + ".wo")
+					
+#					stub_replace_temp = stub_replace_temp.replace("$$LIB_NAME$$", lib_name)
+#					stub_replace_temp = stub_replace_temp.replace("$$FUNCTION_NAME$$", prxSyms["name"])
+#					stub_replace_temp = stub_replace_temp.replace("$$NID$$", prxSyms["hex_id"])
+#					stub_content_temp.append(stub_replace_temp + "\n")
+#					stub_replace_temp = ""
 				else:
 					print('[MGEN] Skipping Function')
 
+					
+#	print("[STUB] Generating : " + stub_filename)
+#	output_stubx_handle = open("build/" + stub_filename, "wb")
+#	output_stubx_handle.write("".join(stub_content_temp))
+#	output_stubx_handle.close()
+			
 # Join our list to generate needed files
 target_loop_joined = ' '.join(target_loop)
 target_weak_loop_joined = ' '.join(target_weak_loop)

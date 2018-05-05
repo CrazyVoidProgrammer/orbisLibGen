@@ -1,0 +1,8 @@
+.section .orbislink.fstubs.$$LIB_NAME$$.$$FUNCTION_NAME$$,"ax",%progbits
+    .align 4    
+.global $$FUNCTION_NAME$$
+    .global $$FUNCTION_NAME$$
+    .type $$FUNCTION_NAME$$, %function
+$$FUNCTION_NAME$$:
+    .quad 0x$$NID$$
+    .align 4
