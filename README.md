@@ -14,10 +14,13 @@ Windows, Linux, Mac
 #### 1: Run our script and point it to idc ps4libdoc system/common/lib folder
 ##### ./generate.py ps4libdoc/system/common/lib
 
-#### 2: Lets Compile our Asm files into objects
+#### 2: Cd into the build folder
+##### cd build
+
+#### 3: Lets Compile our Asm files into objects
 ##### make xobjects
 
-#### 3: Lets make this objects a lib
+#### 4: Lets make this objects a lib
 ##### make xstubs
 
 
