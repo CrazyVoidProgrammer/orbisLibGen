@@ -1,4 +1,5 @@
 # OrbisLibGen
+##### Link to compiled stubs : https://file.io/YrM7f0
 ## Version 1.00
 
 This python script is used to generate stub files for the Orbis Open Source SDK!
